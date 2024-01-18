@@ -1,0 +1,56 @@
+#!/bin/sh
+
+
+function usage() {
+
+  echo "Usage:"
+  echo "fur -[re][awn][hf] [file] [target]"
+
+  echo "modes - [re]:"
+  echo "* r - roll. Packs up your folder into a furball"
+  echo "* e - extract. Extracts your furball into a folder."
+
+
+  echo "output - [awn]:"
+  echo "* a - show all logs."
+  echo "* w - show warnings and errors only"
+  echo "* d - default value, show only important info"
+
+
+  echo "encoding - [hf]":
+  echo "* h - use human-readable encryption. For easier editing without unpacking a furball"
+  echo "* f - full encryption. Use maximum out of encryption for lowest possible file sizes"
+
+  echo "[file] and [target]"
+  echo "file - a target file, directory for 'roll' mode"
+
+}
+
+
+function eval_rust() {
+  ./furball $options $file $target
+}
+
+
+function check() {
+
+  case $options in
+    -*)
+      eval_rust
+      ;;
+    *)
+      usage
+      return -1
+      ;;
+  esac
+}
+
+options=$1
+file=$2
+target=$3
+
+if [ -z "$options" ] || [ -z "$file" ] || [ -z "$target" ]; then
+  usage
+else
+  check
+fi
