@@ -171,7 +171,7 @@ impl FurballTrait for Furball {
         nall = format!("{}\n[FURDIR-HEADER] Zfur-location=``{:#?}``[/FURDIR-HEADER]", all, &path);
 
       } else {
-        nall = format!("{}\n[FURFILE-HEADER] Zfur-location=``{:#?}``;{};Zfur_data=``{}``[/FURFILE-HEADER]", all, &path, "FUR-BONE", new);
+        nall = format!("{}\n[FURFILE-HEADER] Zfur-location=``{:#?}``;{};Zfur_data{}{}[/FURFILE-HEADER]", all, &path, "FUR-BONE", "eq", new);
       }
 
     }
@@ -204,7 +204,7 @@ impl FurballTrait for Furball {
           let mut fork = buffer.replace("[FURDIR-HEADER]","")
               .replace("[/FURDIR-HEADER]","");
 
-          let locs: Vec<&str> = fork.split("Zfur-location=").collect::<Vec<&str>>();
+          let locs: Vec<&str> = fork.split("fur-location=").collect::<Vec<&str>>();
 
           let loc: &str = &locs[1].replace("``\"", "").replace("\"``","");
 
@@ -225,11 +225,9 @@ impl FurballTrait for Furball {
         let locs: Vec<&str> = fork.split(&format!(";{};", "FUR-BONE")).collect::<Vec<&str>>();
 
 
-        let loc: &str = &locs[0].split("Zfur-location=").collect::<Vec<&str>>()[1]
-            .replace("``\"", "").replace("\"``","");
+        let loc: &str = &locs[0].split("fur-location=").collect::<Vec<&str>>()[1].replace("\"``", "").replace("``\"", "");
 
-        let src: &str = &locs[1].split("Zfur-data").collect::<Vec<&str>>()[1]
-            .replace("``\"", "").replace("\"``","");
+        let src: &str = &locs[1].split("dataeq").collect::<Vec<&str>>()[1];
 
         println!("{}", loc);
         let mut nwrite = fs::File::create(loc)?;
